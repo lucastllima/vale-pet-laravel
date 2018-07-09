@@ -20,6 +20,7 @@ use Illuminate\Http\Request;
 Route::post('/login', 'Api\AuthController@login');
 Route::post('/refresh', 'Api\AuthController@refresh');
 Route::post('/logout', 'Api\AuthController@logout');
+Route::post('/registro', 'Api\AuthController@registro');
 
 Route::group(['middleware' => 'jwt.auth', 'namespace' => 'Api\\'], function() {
     Route::get('/me', 'AuthController@me');
