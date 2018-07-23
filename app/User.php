@@ -15,7 +15,7 @@ class User extends Authenticatable
      * @var array
      */
     protected $fillable = [
-        'name', 'email', 'password',
+        'name', 'email', 'password', 'facebook_id', 'telefone', 'avatar'
     ];
 
     /**
@@ -35,7 +35,6 @@ class User extends Authenticatable
 
     public static function rules_update_api($id){
         return ['name' => 'required',
-                'cpf' => 'required',
                 'email' => 'required | email | unique:users,email,'.$id];
     }
 
@@ -50,4 +49,17 @@ class User extends Authenticatable
         'password.min' => 'O campo senha deve ter no mínimo 6 digitos. Por favor, você pode verificar isso?',
 		'email.unique' => 'O e-mail informado já está em uso.'
     ];
+
+    public function posts()
+    {
+        return $this->hasMany('App\Post', 'user_id', 'id');
+    }
+
+    public function base64_to_jpeg($base64_string, $output_file) {
+        $ifp = fopen( $output_file, 'wb' ); 
+        fwrite( $ifp, base64_decode( $base64_string ) );
+        fclose( $ifp ); 
+    
+        return $output_file; 
+    }
 }

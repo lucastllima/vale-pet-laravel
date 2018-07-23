@@ -80,6 +80,50 @@ class AuthController extends Controller
         return response()->json($r);
     }
 
+    public function atualizar_perfil(Request $r)
+    {
+        $user = User::find($r->id);
+        if(isset($user))
+        {
+            $user->fill($r->all());
+            if(isset($r->senha))
+            {
+                if(!empty($r->senha))
+                {
+                    $user->password = bcrypt($r->senha);
+                }else{
+                    return ['error' => 'Senha inválida!'];
+                }
+            }
+            
+            $user->save();
+            
+            return response()->json(compact('user'));
+        }else{
+            return response()->json(['error' => 'Usuário não encontrado.'], 401);
+        }
+
+    }
+
+    public function atualizar_foto_perfil(Request $r)
+    {
+        $user = User::find($r->id);
+        if(!empty($r->avatar)){
+
+            $file = uniqid().'.jpg';
+            $user->base64_to_jpeg($r->avatar, base_path().'/public/uploads/avatar/'.$file);
+            
+            $user->avatar = $file;
+            $user->save();
+
+            return response()->json(compact('user'));
+        }else{
+            return ['error' => 'Foto inválida!'];
+        }
+
+        
+    }
+
     public function logout()
     {
         $token = $this->jwtAuth->getToken(); //Pega o token do header enviado

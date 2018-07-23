@@ -23,5 +23,26 @@ Route::post('/logout', 'Api\AuthController@logout');
 Route::post('/registro', 'Api\AuthController@registro');
 
 Route::group(['middleware' => 'jwt.auth', 'namespace' => 'Api\\'], function() {
+    
+    # --> Rotas do perfil
     Route::get('/me', 'AuthController@me');
+    Route::post('/atualizar-perfil', 'AuthController@atualizar_perfil');
+    Route::post('/atualizar-foto-perfil', 'AuthController@atualizar_foto_perfil');
+    
+
+    # --> Rotas das postagens
+    Route::get('/posts', 'PostController@posts');
+    Route::get('/meus-posts/{id}', 'PostController@meus_posts');
+    Route::post('/inserir-post', 'PostController@inserir_post');
+    Route::post('/alterar-situacao-post/{id}', 'PostController@alterar_situacao_post');
+    Route::post('/remover-post/{id}', 'PostController@remover_post');
+    Route::post('/atualizar-post/{id}', 'PostController@atualizar_post');
+    Route::post('/buscar-post', 'PostController@buscar_post');
+
+    # --> Racas
+    Route::get('/obter-racas/{tipo}', 'PostController@obter_racas');
+
+    # --> Cidades
+    Route::get('/obter-cidades', 'PostController@obter_cidades');
+    
 });
